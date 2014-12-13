@@ -1,0 +1,14 @@
+INFO:
+This is MyPipeline, the tutorial pipeline.
+For more information see:
+http://genomic-epiphany.ca/drupal-7.0/pipeline_builder
+
+This pipeline takes in a set of Fastq files and runs FastQC on them. Then, it looks in each fastqc_data.txt file produced, and prints the value stored for Total Sequences.
+Sample FASTQ inputs are found in the resources folder.
+
+STEPS:
+Run FastQC
+Print Total Sequences
+
+ARGS:
+

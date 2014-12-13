@@ -1,0 +1,13 @@
+1. MRESeq is ported to pipelinebuilder except for the last analysis step. There is a bug in the file resources/MREseq_offset_BAM2RE_coverage_tabix.R. The RE_Analysis step creates an sh script; Sumit Jobs qsubs the sh script, and analysis will fail with the following error: 
+	"Error in sum(RE_overlaps) : invalid 'type' (list) of argument
+         Calls: bedpe2REcvg
+         Execution halted"
+This error is produced in the qsub ".e####" files in $_OUT_DIR/JOBS_RE_analysis. 
+YOU WILL NEED TO DEBUG THIS if you want the pipeline to perform any analysis on the MRESeq output.
+It should be simple to debug by someone more experienced with R...
+
+
+2. $BT_INDEXES (Bowtie Indexes) are large files and right now they are in hbabaran/spai accounts. YOU WILL NEED TO MAKE YOUR OWN DIRS and redirect these paths in config.yml. See the note in config.yml for details. Basically: download the files from ftp://ftp.ccb.jhu.edu/pub/data/bowtie2_indexes/ and sort them by genome name, eg hg19 or mm9. Like so: 
+BT_INDEXES:~/bowtie_indexes/hg19/make_hg19.sh
+
+

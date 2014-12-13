@@ -1,0 +1,49 @@
+INFO:
+	This is the PipelineBuilder version of MRESeq. It was tested on SciNet only. 
+
+TODO:
+	setWalltimes doesn't actually do anything; it should follow a math formula based on Ulises Schmill's graph (http://www.genomic-epiphany.ca/drupal-7.0/mreseq) but at the moment you can set it manually through arguments
+	
+	RE_Analysis fails because of a bug in resources/MREseq_offset_BAM2RE_coverage_tabix.R. The R script, when ran produces the following error: 
+	"Error in sum(RE_overlaps) : invalid 'type' (list) of argument
+	Calls: bedpe2REcvg
+	Execution halted"
+This error is produced in the qsub ".e####" files in $_OUT_DIR/JOBS_RE_analysis
+
+DEPENDENCIES:
+	$BT_INDEXES (Bowtie Indexes) are large files and right now they are in hbabaran/spai accounts. YOU WILL NEED TO MAKE YOUR OWN DIRS and redirect these paths in config.yml. See the note in config.yml for details 
+
+	MRESeq requires R packages GenomicRanges and Rsamtools. 
+	to install R package "GenomicRanges" within R:
+		source("http://bioconductor.org/biocLite.R")
+		biocLite("GenomicRanges")
+	to install R package "Rsamtools" within R: 
+		biocLite("Rsamtools")
+
+STEPS:
+	Count FQ in Parallel
+	set Walltimes
+	Make FastQC Batch Script
+	Make FastQC Trim MultiJob Script
+	Make BT2 Aligner Script
+	Make BAM Script
+	Make RE Analysis Script
+	Submit Jobs
+
+ARGS:
+	Rscriptdir: "$_OUT_DIR"
+	RrawBase: "$_IN_DIR"
+	patt: Petronis
+	Rpatt: "Petronis"
+	fastqc_walltime: "00:20:00"
+	fastq_trim_walltime: "00:20:00"
+	bt2_walltime: "00:20:00"
+	bam_process_walltime: "00:20:00"
+	REanalysis_walltime: "00:40:00"
+	ADAPTER: "TruSeq3-PE.fa"
+	TRIM_MINLENGTH: 20
+	GENOME: mm9
+	reFile: "mm9_CCGG.GCGC.ACGT.1.coord.Rdata"
+	offset: 3
+
+ 

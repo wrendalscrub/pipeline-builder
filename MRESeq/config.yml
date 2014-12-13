@@ -1,0 +1,102 @@
+#!/bin/bash
+
+#This is the  config file for MRESeq. It is written in YAML. 
+#DO NOT CHANGE THIS FILE unless you want to specifically change MRESeq software.
+#You can overwrite project-specific arguments via command line. 
+
+#All relative paths are relative to the PIPELINE_DIR (which should be the location of this file and pipelineBuilder.py)
+
+%YAML 1.3
+---
+
+#first directive: overarching project details. 
+#Overwrite these properties with: --config /path/to/your/configfile.sh 
+-
+    pipeline_name: MRESeq - pipeline builder prototype (scinet only)
+    CONSTANTS:
+       COUNTER: resources/countFQreads.sh 
+    #Script loads these environment variables if running on SCC
+    SCC_dependencies:
+        GNU_PARALLEL_MODULE: GNU_PARALLEL
+        JAVA_MODULE: JAVA
+        SAMTOOLS_MODULE: SAMTOOLS
+        R_MODULE: "R/3.0.2"
+        BEDTOOLS: bedtools
+        TABIX: "" #blank string for module-load
+        FASTQC: /EPIGENETICS/ARCHIVE/SOFTWARE/fastqc/FastQC/fastqc 
+        TRIMMOMATIC: /EPIGENETICS/ARCHIVE/SOFTWARE/third-party-tools/Trimmomatic-0.32/trimmomatic-0.32.jar
+        BOWTIE2: /EPIGENETICS/ARCHIVE/SOFTWARE/bowtie2-2.2.2/bowtie2-2.2.2/bowtie2 
+        BT2_INDEX: /EPIGENETICS/SCRATCH/hbabaran/bowtie2_indexes 
+                 #NOTE These are large so they're in a scratch dir but they will be erased
+                 #download them for your use at ftp://ftp.ccb.jhu.edu/pub/data/bowtie2_indexes/
+                 #unzip the files into a directory organized by $GENOME/files, 
+                 #eg /scratch/$USER/bowtie2_indexes/mm9/make_mm9.sh
+        ADAPTERS: /EPIGENETICS/ARCHIVE/SOFTWARE/third-party-tools/Trimmomatic-0.32/adapters
+ 
+    #Script loads these environment variables if running on SciNet
+    SCINET_dependencies:
+        GNU_PARALLEL_MODULE: "gnu-parallel"
+        JAVA_MODULE: java
+        SAMTOOLS_MODULE: samtools
+        R_MODULE: "intel R/3.0.1"
+        FASTQC: /home/a/arturas/spai/software/FastQC/fastqc
+        TRIMMOMATIC: /home/a/arturas/spai/software/Trimmomatic-0.32/trimmomatic-0.32.jar
+        BOWTIE2: /home/a/arturas/spai/software/bowtie2-2.1.0/bowtie2
+        BT2_INDEX: /home/a/arturas/spai/software/bowtie2_indexes
+        TABIX: /project/a/arturas/Software/third-party-tools/tabix-0.2.6/ #trailing slash is important
+        BEDTOOLS: /project/a/arturas/Software/third-party-tools/bedtools2-2.19.1/bin/bedtools
+        ADAPTERS: /home/a/arturas/spai/software/Trimmomatic-0.32/adapters
+    
+    #Script loads these environment variables if running on an unknown system (eg Gallifrey)
+    OTHER_dependencies:
+
+
+#The rest of the directives list your steps here in order
+#all step args must be uniquely named or they will be overwritten
+-
+    name: Count FQ in Parallel         #name of the pipeline step
+    script: bin/countFQ_inParallel.sh  #location of the pipeline step's script relative to PIPELINE_DIR
+    args:
+        Rscriptdir: "$_OUT_DIR"
+        RrawBase: "$_IN_DIR"
+        patt: Petronis
+        Rpatt: "Petronis"
+
+-
+    name: set Walltimes
+    script: bin/set_Walltimes.sh
+    args:
+        fastqc_walltime: "00:20:00"
+        fastq_trim_walltime: "00:20:00"
+        bt2_walltime: "00:50:00"
+        bam_process_walltime: "00:20:00"
+        REanalysis_walltime: "00:40:00"
+-
+    name: Make FastQC Batch Script
+    script: bin/fastq_batch.sh
+    args:
+-
+    name: Make FastQC Trim MultiJob Script
+    script: bin/fastq_trim_multiJob.sh
+    args:
+        ADAPTER: "TruSeq3-PE.fa"
+        TRIM_MINLENGTH: 20
+-
+    name: Make BT2 Aligner Script
+    script: bin/bt2_aligner_multiJob.sh
+    args:
+        GENOME: mm9
+-
+    name: Make BAM Script
+    script: bin/BAM_Process.sh
+    args:
+-
+    name: Make RE Analysis Script
+    script: bin/RE_analysis.sh
+    args:
+        reFile: "mm9_CCGG.GCGC.ACGT.1.coord.Rdata"
+        offset: 3
+-
+    name: Submit Jobs
+    script: bin/submissionScript.sh
+    args:

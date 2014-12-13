@@ -1,0 +1,20 @@
+This folder contains extracts of MREseq data from developing mouse liver, for the purposes of refining the MREseq processing pipeline.
+
+This file last updated on 21 October 2014, by Shraddha Pai
+
+Contents
+----------
+4 Fastq files, of two samples with paired-end reads:
+* Petronis_AM_23 - 1day old mouse sample
+* Petronis_AM_48 - 4week old mouse sample.
+
+File generating code:
+----------------------
+The following code was used to generate these files:
+
+[spai@mgmt2 MouseLiver]$ pwd 
+/EPIGENETICS/ARCHIVE/DATA/MRESEQ/RAW/MouseLiver
+[spai@mgmt2 MouseLiver]$ zcat Petronis_AM_23_AAT_L001_R1_001.fastq.gz | head -n 4000000 > /EPIGENETICS/SCRATCH/spai/MREseq_sample/Petronis_AM_23_AAT_SMALLER_L001_R1_001.fastq
+[spai@mgmt2 MouseLiver]$ zcat Petronis_AM_23_AAT_L001_R2_001.fastq.gz | head -n 4000000 > /EPIGENETICS/SCRATCH/spai/MREseq_sample/Petronis_AM_23_AAT_SMALLER_L001_R2_001.fastq 
+[spai@mgmt2 MouseLiver]$ zcat Petronis_AM_48_GTA_L001_R1_001.fastq.gz | head -n 4000000 > /EPIGENETICS/SCRATCH/spai/MREseq_sample/Petronis_AM_48_GTA_SMALLER_L001_R1_001.fastq
+[spai@mgmt2 MouseLiver]$ zcat Petronis_AM_48_GTA_L001_R2_001.fastq.gz | head -n 4000000 > /EPIGENETICS/SCRATCH/spai/MREseq_sample/Petronis_AM_48_GTA_SMALLER_L001_R2_001.fastq 

@@ -1,0 +1,52 @@
+#!/bin/bash
+
+#This is a template config file for building a pipeline. It is written in YAML. 
+#Edit to suit the needs of your new pipeline. 
+#For more information, see the README and the drupal page: 
+
+#All relative paths are relative to the PIPELINE_DIR (which should be the location of this file and pipelineBuilder.py)
+
+%YAML 1.3
+---
+
+#first directive: overarching project details. 
+#Overwrite these properties with: --config /path/to/your/configfile.sh 
+-
+    pipeline_name: TestPipeline 
+    CONSTANTS:
+        SOME_CONSTANT_VAR: some universal value
+    #Script loads these environment variables if running on SCC
+    SCC_dependencies:
+        FASTQ: /path/to/fastq/on/SCC
+        BOWTIE: /path/to/bowtie/on/SCC
+    #Script loads these environment variables if running on SciNet
+    SCINET_dependencies:
+        FASTQ: /path/to/fastq/on/SciNet
+        BOWTIE: /path/to/bowtie/on/SciNet
+    #Script loads these environment variables if running on an unknown system (eg Gallifrey)
+    OTHER_dependencies:
+        FASTQ: /path/to/fastq/on/some/other/system
+        BOWTIE: /path/to/bowtie/on/another/system
+
+
+#The rest of the directives list your steps here in order
+#all step args must be uniquely named or they will be overwritten
+-
+    name: step1         #name of the pipeline step
+    script: bin/step1.sh   #location of the pipeline step's script relative to PIPELINE_DIR
+    args:               #Project- and run-specific information; allow users to specify or overwrite these values
+
+-
+    name: step2
+    script: bin/step2_testdependencies.sh
+    args:
+        reference_file:       #this is a mandatory arg
+        some_arg: some_value  #this is an optional arg that can be overwritten 
+
+-
+    name: step3
+    script: bin/step3_testarguments.sh
+    args: 
+        CAPSLOCK_ARGUMENT: caps_value
+
+
