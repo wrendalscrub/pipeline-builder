@@ -1,0 +1,18 @@
+This is a generic template pipeline. For information on how to use it, visit the Drupal page: 
+http://genomic-epiphany.ca/drupal-7.0/pipeline_builder
+
+Summary:
+To make a new pipeline: 
+1. Copy the template pipeline into the pipelines repo.
+2. Move all required sh scripts into the bin directory.
+3. Move all required resources into the resources directory.
+4. Edit config.yml to reflect the step locations and order, path dependencies and required arguments.  
+5. CHANGE THIS README to include information on necessary arguments for run. 
+
+To run this pipeline:
+Type ./run and follow the on-screen prompts. 
+
+Dependencies: 
+Python 2.6.5 or similar
+PyYAML (included in framework/yaml)
+

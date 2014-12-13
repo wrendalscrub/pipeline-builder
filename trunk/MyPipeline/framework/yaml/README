@@ -1,0 +1,21 @@
+PyYAML - The next generation YAML parser and emitter for Python.
+
+Version 3.1.1.
+
+This is a stripped copy of just the python library so it could be included locally without installation.  
+
+For more information, check the PyYAML homepage:
+'http://pyyaml.org/wiki/PyYAML'.
+
+For PyYAML tutorial and reference, see:
+'http://pyyaml.org/wiki/PyYAMLDocumentation'.
+
+Post your questions and opinions to the YAML-Core mailing list:
+'http://lists.sourceforge.net/lists/listinfo/yaml-core'.
+
+Submit bug reports and feature requests to the PyYAML bug tracker:
+'http://pyyaml.org/newticket?component=pyyaml'.
+
+PyYAML is written by Kirill Simonov <xi@resolvent.net>.  It is released
+under the MIT license. See the file LICENSE for more details.
+

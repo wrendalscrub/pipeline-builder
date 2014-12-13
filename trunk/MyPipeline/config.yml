@@ -1,0 +1,40 @@
+#!/bin/bash
+
+#This is a template config file for building a pipeline. It is written in YAML. 
+#Edit to suit the needs of your new pipeline. 
+#For more information, see the README and the drupal page: 
+
+#All relative paths are relative to the PIPELINE_DIR (which should be the location of this file and pipelineBuilder.py)
+
+%YAML 1.3
+---
+
+#first directive: overarching project details. 
+#Overwrite these properties with: --config /path/to/your/configfile.sh 
+-
+    pipeline_name: MyPipeline 
+    CONSTANTS:
+
+    SCC_dependencies:
+        FASTQC: /EPIGENETICS/ARCHIVE/SOFTWARE/fastqc/FastQC/fastqc
+        JAVA_MODULE: JAVA
+    SCINET_dependencies:
+        FASTQC: /home/a/arturas/spai/software/FastQC/fastqc
+        JAVA_MODULE: java
+    OTHER_dependencies:
+
+
+#The rest of the directives list your steps here in order
+#all step args must be uniquely named or they will be overwritten
+-
+    name: Run FastQC
+    script: bin/runFastQ.sh
+    args:
+
+-
+    name: Print Total Sequences
+    script: bin/printTotalSequences.sh
+    args:
+
+
+
